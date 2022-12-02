@@ -38,12 +38,13 @@ def expected_value_over_delays(state, ply):
 
     # PLACE YOUR CODE HERE
     # delay iterates through min and max time steps
-    for delay in range(min_time_steps, max_time_steps):
-        # sets the remaining time in the state as the value of delay.
-        state.time_remaining = delay
+    # got help from TA Yasemin Gokcin understanding how  get expected value over delays using an iterative approach.
+    for delayTimes in range(min_time_steps, max_time_steps):
+        # sets the remaining time in the state as the value of the delay.
+        state.time_remaining = delayTimes
 
         # sets val equal to its self plus the product of the probability of time and value of the state and ply.
-        val = val + (probability_of_time(delay) * value(state,ply))
+        val += (value(state,ply) * probability_of_time(delayTimes) )
     # Note that the value of "ply" must be passed along, without
     # modification, to any function calls that calculate the value 
     # of a state.
@@ -57,7 +58,27 @@ def heuristic_value(state):
     be between the maximum payoff value and the additive inverse of the
     maximum payoff."""
     val = 0.0
-
     # PLACE YOUR CODE HERE
+    # todo create a heurisitic funtion that uses board specifications to create strategy in the game
+    # todo create strategy by getting the board size
+    size = board_size
+    # TODO get board location for strategy.
+    compLoc = size - state.w_loc
+    humanLoc = size - state.e_loc
+    #todo create variables for players.
+    computer = Player.west
+    human = Player.east
+
+
+    # TODO create scenarios where if the max payoff is 100 the computer wins
+    if state.current_turn is computer:# if it is the computers turn
+        if humanLoc > compLoc:
+            val = -100
+
+    #TODO create scenarios where if the max payoff is -100 the human wins
+    if state.current_turn is human:#if it is the humans turn
+        if compLoc > humanLoc:
+            val = 100
+
 
     return val
